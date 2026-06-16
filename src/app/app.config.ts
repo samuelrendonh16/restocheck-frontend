@@ -1,11 +1,18 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
-import { provideRouter } from '@angular/router';
+/**
+ * APP CONFIG
+ * 
+ * Configuración principal de la aplicación Angular.
+ * Aquí se registran los providers globales.
+ */
 
+import { ApplicationConfig } from '@angular/core';
+import { provideRouter } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
 import { routes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {
-  providers: [
-    provideBrowserGlobalErrorListeners(),
-    provideRouter(routes)
-  ]
+    providers: [
+        provideRouter(routes),
+        provideHttpClient()  // Habilita HttpClient en toda la app
+    ]
 };

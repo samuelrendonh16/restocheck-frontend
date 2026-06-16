@@ -1,0 +1,228 @@
+<div class="tareas-page">
+
+    <!-- Header -->
+    <div class="tareas-header">
+        <div class="header-info">
+            <div class="header-icon">📋</div>
+            <div>
+                <h1>REGISTRO DIARIO</h1>
+                <span class="sede-nombre">SEDE: {{ nombreSede }}</span>
+            </div>
+        </div>
+        <div class="fecha-selector">
+            <label>FECHA DE CONSULTA:</label>
+            <input
+                type="date"
+                [(ngModel)]="fechaConsulta"
+                (change)="cambiarFecha()"
+            />
+        </div>
+    </div>
+
+    <!-- Contenido principal -->
+    <div class="tareas-content">
+
+        <!-- Panel izquierdo -->
+        <div class="panel-izquierdo">
+
+            <!-- Toggle -->
+            <div class="tipo-toggle">
+                <button 
+                    class="toggle-btn" 
+                    [class.active]="esControl()"
+                    (click)="cambiarTipo('CHECKLIST')"
+                >
+                    CONTROL
+                </button>
+                <button 
+                    class="toggle-btn" 
+                    [class.active]="esAuditoria()"
+                    (click)="cambiarTipo('AUDITORIA')"
+                >
+                    AUDITORÍA
+                </button>
+            </div>
+
+            <!-- Categorías -->
+            <div class="mensaje" *ngIf="loadingCategorias">Cargando...</div>
+
+            <div 
+                *ngFor="let categoria of categorias" 
+                class="categoria-item"
+                [class.active]="categoriaSeleccionada?.id === categoria.id"
+                (click)="seleccionarCategoria(categoria)"
+            >
+                <span>{{ categoria.nombre }}</span>
+                <span class="punto-pendiente" *ngIf="tienePendientes(categoria.id)"></span>
+            </div>
+
+        </div>
+
+        <!-- Panel derecho -->
+        <div class="panel-derecho">
+
+            <!-- Sin categoría -->
+            <div class="placeholder" *ngIf="!categoriaSeleccionada && !ejecucionActiva">
+                Selecciona una categoría para ver las tareas
+            </div>
+
+            <!-- Lista de plantillas -->
+            <div *ngIf="categoriaSeleccionada && !ejecucionActiva">
+                <div class="categoria-header">
+                    <h2>{{ categoriaSeleccionada.nombre }}</h2>
+                </div>
+
+                <div class="mensaje" *ngIf="loadingPlantillas">Cargando...</div>
+
+                <div class="plantillas-lista" *ngIf="!loadingPlantillas">
+                    <div *ngIf="plantillas.length === 0" class="mensaje">
+                        No hay plantillas en esta categoría
+                    </div>
+                    <div
+                        *ngFor="let plantilla of plantillas"
+                        class="plantilla-card"
+                        [class.completada]="plantillaCompletada(plantilla.id)"
+                        (click)="seleccionarPlantilla(plantilla)"
+                    >
+                        <div class="plantilla-info">
+                            <div class="plantilla-nombre">{{ plantilla.nombre }}</div>
+                            <div class="plantilla-descripcion">{{ plantilla.descripcion }}</div>
+                        </div>
+
+                        <!-- Indicador de estado -->
+                        <div class="plantilla-estado" *ngIf="plantillaCompletada(plantilla.id)">
+                            <span class="check-completada">✓</span>
+                            <span class="porcentaje-completada">
+                                {{ getEstadoPlantilla(plantilla.id)?.porcentaje }}%
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ejecución activa -->
+            <!-- Ejecución activa -->
+<div *ngIf="ejecucionActiva" class="ejecucion-container">
+
+    <!-- VISTA: Ya completada hoy -->
+    <div *ngIf="ejecucionActiva.estado === 'COMPLETADA'" class="ejecucion-completada">
+        <div class="completada-header">
+            <div class="icono-check">✓</div>
+            <h2>{{ ejecucionActiva.nombrePlantilla }}</h2>
+            <span class="subtitulo">COMPLETADO HOY</span>
+        </div>
+
+        <div class="resumen-card">
+            <div class="resumen-porcentaje">
+                <span class="numero">{{ ejecucionActiva.porcentaje }}%</span>
+                <span class="label">Cumplimiento</span>
+            </div>
+            <div class="resumen-detalles">
+                <div class="detalle">
+                    <span class="valor verde">{{ ejecucionActiva.itemsCumplidos }}</span>
+                    <span class="label">Cumplidos</span>
+                </div>
+                <div class="detalle">
+                    <span class="valor rojo">{{ ejecucionActiva.itemsNoCumplidos }}</span>
+                    <span class="label">No cumplidos</span>
+                </div>
+                <div class="detalle">
+                    <span class="valor">{{ ejecucionActiva.horaFin }}</span>
+                    <span class="label">Hora fin</span>
+                </div>
+            </div>
+        </div>
+
+        <button class="btn-volver" (click)="volverAPlantillas()">← Volver</button>
+    </div>
+
+    <!-- VISTA: En progreso -->
+    <div *ngIf="ejecucionActiva.estado === 'EN_PROGRESO'">
+        <!-- Header -->
+        <div class="ejecucion-header">
+            <div>
+                <h2>{{ ejecucionActiva.categoriaNombre }}</h2>
+                <span class="subtitulo">
+                    {{ esControl() ? 'REALIZAR CONTROL DIARIO' : 'REALIZAR EVALUACIÓN' }}
+                </span>
+            </div>
+            <button 
+                class="btn-finalizar"
+                [disabled]="!todosCompletados"
+                (click)="finalizarEjecucion()"
+            >
+                {{ esControl() ? 'FINALIZAR CONTROL' : 'FINALIZAR AUDITORÍA' }}
+            </button>
+        </div>
+
+        <!-- Progreso -->
+        <div class="progreso-info">
+            {{ itemsCompletados }} de {{ ejecucionActiva.itemsTotal }} completados
+        </div>
+
+        <!-- Loading -->
+        <div class="mensaje" *ngIf="loadingEjecucion">Iniciando...</div>
+
+        <!-- Lista de items -->
+        <div 
+            *ngFor="let item of ejecucionActiva.items" 
+            class="item-card"
+            [class.completado]="item.completado === true"
+            [class.no-cumple]="item.completado === false"
+        >
+            <div class="item-content">
+                <div class="item-row">
+                    <div class="item-info">
+                        <div class="item-titulo">
+                            {{ item.titulo }}
+                            <span class="badge-critico" *ngIf="item.esCritico">CRÍTICO</span>
+                        </div>
+                        <div class="item-descripcion">{{ item.descripcion }}</div>
+                    </div>
+
+                    <!-- Tipo CHECKBOX -->
+                    <div 
+                        *ngIf="item.tipoRespuesta === 'CHECKBOX'"
+                        class="item-checkbox"
+                        [class.checked]="item.completado === true"
+                        (click)="marcarItem(item, item.completado !== true)"
+                    >
+                        <span *ngIf="item.completado === true">✓</span>
+                    </div>
+
+                    <!-- Tipo CUMPLE/NO CUMPLE -->
+                    <div *ngIf="item.tipoRespuesta === 'CUMPLE_NO_CUMPLE'" class="item-botones">
+                        <button 
+                            class="btn-cumple"
+                            [class.active]="item.completado === true"
+                            (click)="marcarItem(item, true)"
+                        >
+                            CUMPLE
+                        </button>
+                        <button 
+                            class="btn-no-cumple"
+                            [class.active]="item.completado === false"
+                            (click)="marcarItem(item, false)"
+                        >
+                            NO CUMPLE
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Campo de observación -->
+                <div class="item-observacion">
+                    <textarea
+                        [(ngModel)]="item.observacion"
+                        (blur)="guardarObservacion(item)"
+                        placeholder="Agregar observación (opcional)..."
+                        rows="2"
+                    ></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Botón volver -->
+        <button class="btn-volver" (click)="volverAPlantillas()">← Volver</button>
+    </div>
+    
+</div>

@@ -1,0 +1,28 @@
+<!-- 
+    LAYOUT - Estructura principal
+    
+    ┌─────────────────────────────────────────┐
+    │ SIDEBAR │         HEADER                │
+    │         ├───────────────────────────────┤
+    │         │                               │
+    │         │         CONTENIDO             │
+    │         │       (router-outlet)         │
+    │         │                               │
+    └─────────┴───────────────────────────────┘
+-->
+
+<div class="layout">
+    <!-- Sidebar fijo a la izquierda -->
+    <app-sidebar></app-sidebar>
+
+    <!-- Contenedor principal (header + contenido) -->
+    <div class="main-container">
+        <!-- Header fijo arriba -->
+        <app-header></app-header>
+
+        <!-- Área de contenido scrolleable -->
+        <main class="main-content">
+            <router-outlet></router-outlet>
+        </main>
+    </div>
+</div>

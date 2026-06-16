@@ -1,0 +1,16 @@
+<!-- 
+    HEADER - Barra superior
+-->
+
+<header class="header">
+    <!-- Título de la página (opcional) -->
+    <div class="header-title">
+        <h1 *ngIf="titulo">{{ titulo }}</h1>
+    </div>
+
+    <!-- Indicador de conexión -->
+    <div class="connection-status" [class.connected]="conectado">
+        <span class="status-dot"></span>
+        <span class="status-text">{{ conectado ? 'SEDE CONECTADA' : 'SIN CONEXIÓN' }}</span>
+    </div>
+</header>

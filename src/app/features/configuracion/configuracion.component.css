@@ -1,0 +1,557 @@
+.config-page {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Pestañas */
+.tabs {
+    display: flex;
+    gap: 8px;
+    background: white;
+    border-radius: 50px;
+    padding: 8px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    max-width: 600px;
+}
+
+.tab {
+    flex: 1;
+    padding: 12px 20px;
+    border: none;
+    background: transparent;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #999;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.tab.active {
+    background: #E53935;
+    color: white;
+}
+
+/* Layout config */
+.config-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 24px;
+}
+
+/* Formulario */
+.form-card {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    height: fit-content;
+}
+
+.form-card h2 {
+    margin: 0 0 20px 0;
+    font-size: 20px;
+    color: #1a1a2e;
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 14px;
+    margin-bottom: 12px;
+    box-sizing: border-box;
+    font-family: inherit;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #E53935;
+}
+
+.btn-registrar {
+    width: 100%;
+    padding: 14px;
+    background: #E53935;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 4px;
+}
+
+.btn-registrar:hover {
+    background: #c62828;
+}
+
+/* Lista de sedes */
+.sedes-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.sede-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: white;
+    border-radius: 12px;
+    padding: 16px 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.sede-codigo {
+    font-size: 12px;
+    font-weight: 700;
+    color: #E53935;
+    min-width: 28px;
+}
+
+.sede-info {
+    flex: 1;
+}
+
+.sede-nombre {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1a1a2e;
+    text-transform: uppercase;
+}
+
+.sede-tipo {
+    font-size: 11px;
+    color: #999;
+    text-transform: uppercase;
+    margin-top: 2px;
+}
+
+.btn-eliminar {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    opacity: 0.4;
+    transition: opacity 0.2s;
+}
+
+.btn-eliminar:hover {
+    opacity: 1;
+}
+
+/* Mensajes y placeholder */
+.mensaje, .placeholder {
+    padding: 40px;
+    text-align: center;
+    color: #999;
+}
+
+/* Label de formulario */
+.form-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    color: #999;
+    margin-bottom: 6px;
+    margin-top: 4px;
+    letter-spacing: 0.5px;
+}
+
+/* Info acceso global */
+.acceso-global-info {
+    padding: 12px 14px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 12px;
+}
+
+/* Lista usuarios */
+.usuarios-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.usuario-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: white;
+    border-radius: 50px;
+    padding: 12px 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.usuario-avatar {
+    width: 44px;
+    height: 44px;
+    background: #1a1a2e;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+
+.usuario-info {
+    flex: 1;
+}
+
+.usuario-nombre {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1a1a2e;
+    text-transform: uppercase;
+}
+
+.usuario-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.badge-rol {
+    font-size: 10px;
+    font-weight: 700;
+    color: #E53935;
+    background: #ffebee;
+    padding: 3px 10px;
+    border-radius: 6px;
+    text-transform: uppercase;
+}
+
+.badge-sede {
+    font-size: 10px;
+    font-weight: 600;
+    color: #999;
+    background: #f5f5f5;
+    padding: 3px 10px;
+    border-radius: 6px;
+    text-transform: uppercase;
+}
+
+/* Form row (dos columnas) */
+.form-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.form-row .form-input {
+    margin-bottom: 0;
+}
+
+/* Lista plantillas config */
+.plantillas-config-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.plantilla-config-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: white;
+    border-radius: 12px;
+    padding: 14px 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.plantilla-tipo-badge {
+    background: #E53935;
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 8px 10px;
+    border-radius: 8px;
+    min-width: 50px;
+    text-align: center;
+}
+
+.plantilla-tipo-badge.es-auditoria {
+    background: #1a1a2e;
+}
+
+.plantilla-config-info {
+    flex: 1;
+}
+
+.plantilla-config-nombre {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1a1a2e;
+    text-transform: uppercase;
+}
+
+.plantilla-config-cat {
+    font-size: 12px;
+    color: #999;
+    text-transform: uppercase;
+    margin-top: 2px;
+}
+
+.items-count {
+    color: #E53935;
+    font-weight: 600;
+}
+
+/* Card clickable */
+.plantilla-config-card.clickable {
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.plantilla-config-card.clickable:hover {
+    box-shadow: 0 4px 16px rgba(229, 57, 53, 0.15);
+}
+
+/* Detalle plantilla */
+.detalle-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 24px;
+}
+
+.detalle-header h2 {
+    margin: 0;
+    font-size: 22px;
+    color: #1a1a2e;
+}
+
+.detalle-subtitulo {
+    font-size: 13px;
+    color: #999;
+    text-transform: uppercase;
+}
+
+.btn-volver {
+    padding: 10px 18px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    color: #666;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.btn-volver:hover {
+    border-color: #1a1a2e;
+    color: #1a1a2e;
+}
+
+/* Checkbox label */
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 16px;
+    cursor: pointer;
+}
+
+.checkbox-label input {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+/* Lista items config */
+.items-config-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.item-config-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: white;
+    border-radius: 10px;
+    padding: 14px 18px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.item-orden {
+    width: 28px;
+    height: 28px;
+    background: #1a1a2e;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+.item-config-info {
+    flex: 1;
+}
+
+.item-config-titulo {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1a1a2e;
+}
+
+.item-config-meta {
+    font-size: 12px;
+    color: #999;
+    margin-top: 2px;
+}
+
+.tipo-respuesta {
+    color: #E53935;
+    font-weight: 600;
+}
+
+/* Matriz */
+.matriz-card {
+    background: white;
+    border-radius: 16px;
+    padding: 28px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.matriz-card h2 {
+    margin: 0 0 24px 0;
+    font-size: 20px;
+    color: #1a1a2e;
+}
+
+.matriz-scroll {
+    overflow-x: auto;
+}
+
+.matriz-tabla {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 8px;
+}
+
+.col-permiso {
+    text-align: left;
+    font-size: 12px;
+    font-weight: 600;
+    color: #999;
+    padding: 0 16px 12px 0;
+}
+
+.col-rol {
+    font-size: 11px;
+    font-weight: 700;
+    color: white;
+    background: #1a1a2e;
+    padding: 12px 16px;
+    border-radius: 8px;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.celda-permiso {
+    padding: 16px;
+    background: #f9f9f9;
+    border-radius: 8px 0 0 8px;
+    min-width: 220px;
+}
+
+.permiso-nombre {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1a1a2e;
+    text-transform: uppercase;
+}
+
+.permiso-desc {
+    font-size: 12px;
+    color: #999;
+    margin-top: 2px;
+}
+
+.celda-check {
+    background: #f9f9f9;
+    text-align: center;
+    padding: 16px;
+}
+
+.celda-check:last-child {
+    border-radius: 0 8px 8px 0;
+}
+
+/* Checkbox de la matriz */
+.check-box {
+    width: 32px;
+    height: 32px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin: 0 auto;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    transition: all 0.15s;
+    background: white;
+}
+
+.check-box:hover {
+    border-color: #E53935;
+}
+
+.check-box.checked {
+    background: #E53935;
+    border-color: #E53935;
+}
+
+/* Footer de la matriz */
+.matriz-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 16px;
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.cambios-info {
+    font-size: 13px;
+    color: #FF9800;
+    font-weight: 600;
+}
+
+.btn-guardar-matriz {
+    padding: 14px 32px;
+    background: #E53935;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-guardar-matriz:hover:not(:disabled) {
+    background: #c62828;
+}
+
+.btn-guardar-matriz:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}

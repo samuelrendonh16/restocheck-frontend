@@ -1,0 +1,65 @@
+<!-- 
+    SIDEBAR - Barra lateral de navegación
+    Basado en el prototipo de RestoCheck
+-->
+
+<aside class="sidebar">
+    
+    <!-- Header del Sidebar: Logo y Empresa -->
+    <div class="sidebar-header">
+        <div class="logo">ADR</div>
+        <div class="empresa-info">
+            <span class="empresa-nombre">ASADOS ROSA</span>
+            <span class="empresa-badge">ENTERPRISE</span>
+        </div>
+    </div>
+
+    <!-- Selector de Sede Activa -->
+    <div class="sede-selector" *ngIf="session">
+        <label class="sede-label">SEDE ACTIVA</label>
+        <div class="sede-dropdown" (click)="toggleSedeDropdown()">
+            <span class="sede-actual">{{ sedeActiva?.nombre || 'Seleccionar sede' }}</span>
+            <span class="dropdown-arrow">{{ sedeDropdownOpen ? '▲' : '▼' }}</span>
+        </div>
+        
+        <!-- Lista de sedes -->
+        <ul class="sedes-list" *ngIf="sedeDropdownOpen">
+            <li 
+                *ngFor="let sede of sedes" 
+                (click)="cambiarSede(sede)"
+                [class.active]="sede.id === sedeActiva?.id"
+            >
+                {{ sede.nombre }}
+            </li>
+        </ul>
+    </div>
+
+    <!-- Menú de Navegación -->
+    <nav class="sidebar-nav">
+        <a 
+            *ngFor="let item of menuItems"
+            [routerLink]="item.route"
+            routerLinkActive="active"
+            class="nav-item"
+            [class.hidden]="!hasPermission(item.permiso)"
+        >
+            <span class="nav-icon">{{ item.icon }}</span>
+            <span class="nav-label">{{ item.label }}</span>
+        </a>
+    </nav>
+
+    <!-- Footer: Usuario y Logout -->
+    <div class="sidebar-footer" *ngIf="session">
+        <div class="user-info">
+            <div class="user-avatar">👤</div>
+            <div class="user-details">
+                <span class="user-name">{{ session.usuario.nombreCompleto }}</span>
+                <span class="user-role">{{ session.rol.nombre }}</span>
+            </div>
+        </div>
+        <button class="btn-logout" (click)="logout()">
+            CERRAR SESIÓN
+        </button>
+    </div>
+
+</aside>

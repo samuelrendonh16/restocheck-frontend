@@ -1,0 +1,164 @@
+<div class="reportes-page">
+
+    <!-- Layout: menú lateral + contenido -->
+    <div class="reportes-layout">
+
+        <!-- Menú lateral -->
+        <div class="menu-lateral">
+            <button
+                class="menu-item"
+                [class.active]="vistaActiva === 'COMPLIANCE'"
+                (click)="cambiarVista('COMPLIANCE')"
+            >
+                📊 REAL-TIME COMPLIANCE
+            </button>
+            <button
+                class="menu-item"
+                [class.active]="vistaActiva === 'INCIDENCIAS'"
+                (click)="cambiarVista('INCIDENCIAS')"
+            >
+                ⚠️ INCIDENCIAS & NC
+            </button>
+            <button
+                class="menu-item"
+                [class.active]="vistaActiva === 'RANKING'"
+                (click)="cambiarVista('RANKING')"
+            >
+                🏆 RANKING DE SEDES
+            </button>
+
+            <!-- Filtro de fechas -->
+            <div class="filtro-fechas">
+                <div class="filtro-titulo">RANGO DE FECHAS</div>
+                <label>Desde:</label>
+                <input
+                    type="date"
+                    [(ngModel)]="fechaInicio"
+                    (change)="aplicarFiltro()"
+                />
+                <label>Hasta:</label>
+                <input
+                    type="date"
+                    [(ngModel)]="fechaFin"
+                    (change)="aplicarFiltro()"
+                />
+            </div>
+        </div>
+
+        <!-- Contenido principal -->
+        <div class="contenido-principal">
+
+            <!-- VISTA: Real-Time Compliance -->
+            <div *ngIf="vistaActiva === 'COMPLIANCE'">
+                <div class="mensaje" *ngIf="loading">Cargando...</div>
+
+                <div class="sedes-grid-reportes" *ngIf="!loading">
+                    <div
+                        *ngFor="let sede of sedesCompliance"
+                        class="sede-compliance-card"
+                    >
+                        <div class="card-header">
+                            <div>
+                                <div class="card-sede-nombre">{{ sede.nombre }}</div>
+                                <div class="card-sede-tipo">{{ sede.tipoSede }}</div>
+                            </div>
+                            <div class="punto-progreso" [class]="getColorEstado(sede.progreso)"></div>
+                        </div>
+
+                        <div class="barra-progreso">
+                            <div
+                                class="barra-fill"
+                                [class]="getColorEstado(sede.progreso)"
+                                [style.width.%]="sede.progreso"
+                            ></div>
+                        </div>
+
+                        <div class="card-footer">
+                            <div class="footer-item">
+                                <span class="footer-label">PROGRESO</span>
+                                <span class="footer-valor">{{ sede.progreso }}%</span>
+                            </div>
+                            <div class="footer-item">
+                                <span class="footer-label">EJECUCIONES</span>
+                                <span class="footer-valor">{{ sede.completadas }}/{{ sede.totalEjecuciones }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VISTA: Incidencias & NC -->
+            <div *ngIf="vistaActiva === 'INCIDENCIAS'">
+                <div class="mensaje" *ngIf="loading">Cargando...</div>
+
+                <div *ngIf="!loading">
+                    <div class="incidencias-header" *ngIf="incidencias.length > 0">
+                        {{ incidencias.length }} no conformidad(es) encontrada(s)
+                    </div>
+
+                    <div *ngIf="incidencias.length === 0" class="placeholder-ok">
+                        <div class="icono-ok">✓</div>
+                        <div>Sin no conformidades en este período</div>
+                    </div>
+
+                    <div class="incidencias-lista">
+                        <div
+                            *ngFor="let inc of incidencias"
+                            class="incidencia-card"
+                            [class.critica]="inc.esCritico"
+                        >
+                            <div class="incidencia-icono">⚠️</div>
+                            <div class="incidencia-info">
+                                <div class="incidencia-titulo">
+                                    {{ inc.titulo }}
+                                    <span class="badge-critico" *ngIf="inc.esCritico">CRÍTICO</span>
+                                </div>
+                                <div class="incidencia-meta">
+                                    {{ inc.sede }} · {{ inc.plantilla }} · {{ formatearFecha(inc.fechaEjecucion) }}
+                                </div>
+                                <div class="incidencia-obs" *ngIf="inc.observacion">
+                                    "{{ inc.observacion }}"
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VISTA: Ranking de Sedes -->
+            <div *ngIf="vistaActiva === 'RANKING'">
+                <div class="mensaje" *ngIf="loading">Cargando...</div>
+
+                <div *ngIf="!loading">
+                    <h2 class="ranking-titulo">SEDES CON MAYOR DESEMPEÑO</h2>
+
+                    <div *ngIf="ranking.length === 0" class="placeholder">
+                        No hay datos suficientes en este período
+                    </div>
+
+                    <div class="ranking-lista">
+                        <div
+                            *ngFor="let sede of ranking"
+                            class="ranking-card"
+                            [class]="getClasePosicion(sede.posicion)"
+                        >
+                            <div class="ranking-posicion" [class]="getClasePosicion(sede.posicion)">
+                                {{ sede.posicion }}
+                            </div>
+                            <div class="ranking-info">
+                                <div class="ranking-nombre">{{ sede.nombre }}</div>
+                                <div class="ranking-tipo">{{ sede.tipoSede }}</div>
+                            </div>
+                            <div class="ranking-promedio">
+                                {{ sede.promedio }}%
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

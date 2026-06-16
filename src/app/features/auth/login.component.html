@@ -1,0 +1,59 @@
+<div class="login-container">
+    <div class="login-card">
+
+        <!-- Logo y título -->
+        <div class="login-header">
+            <div class="logo">ADR</div>
+            <h1 class="app-name">ASADOS ROSA</h1>
+            <span class="badge">ENTERPRISE</span>
+        </div>
+
+        <!-- Formulario -->
+        <form (ngSubmit)="onSubmit()" class="login-form">
+
+            <div class="form-group">
+                <label for="usuario">Usuario</label>
+                <input
+                    type="text"
+                    id="usuario"
+                    [(ngModel)]="nombreUsuario"
+                    name="nombreUsuario"
+                    placeholder="Ingresa tu usuario"
+                    [disabled]="loading"
+                    autocomplete="username"
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="password">Contraseña</label>
+                <input
+                    type="password"
+                    id="password"
+                    [(ngModel)]="password"
+                    name="password"
+                    placeholder="Ingresa tu contraseña"
+                    [disabled]="loading"
+                    autocomplete="current-password"
+                >
+            </div>
+
+            <!-- Mensaje de error -->
+            <div class="error-message" *ngIf="error">
+                {{ error }}
+            </div>
+
+            <!-- Botón de login -->
+            <button
+                type="submit"
+                class="btn-login"
+                [disabled]="loading"
+            >
+                <span *ngIf="!loading">INGRESAR</span>
+                <span *ngIf="loading">INGRESANDO...</span>
+            </button>
+
+        </form>
+
+
+    </div>
+</div>

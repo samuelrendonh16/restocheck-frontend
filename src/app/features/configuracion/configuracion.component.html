@@ -1,0 +1,391 @@
+<div class="config-page">
+
+    <!-- Pestañas -->
+    <div class="tabs">
+        <button
+            class="tab"
+            [class.active]="pestanaActiva === 'SEDES'"
+            (click)="cambiarPestana('SEDES')"
+        >
+            SEDES
+        </button>
+        <button
+            class="tab"
+            [class.active]="pestanaActiva === 'ROLES'"
+            (click)="cambiarPestana('ROLES')"
+        >
+            ROLES
+        </button>
+        <button
+            class="tab"
+            [class.active]="pestanaActiva === 'USERS'"
+            (click)="cambiarPestana('USERS')"
+        >
+            USERS
+        </button>
+        <button
+            class="tab"
+            [class.active]="pestanaActiva === 'PLANTILLAS'"
+            (click)="cambiarPestana('PLANTILLAS')"
+        >
+            PLANTILLAS
+        </button>
+    </div>
+
+    <!-- PESTAÑA SEDES -->
+    <div class="tab-content" *ngIf="pestanaActiva === 'SEDES'">
+        <div class="config-layout">
+
+            <!-- Formulario nueva sede -->
+            <div class="form-card">
+                <h2>NUEVA SEDE</h2>
+
+                <input
+                    type="text"
+                    [(ngModel)]="nuevaSede.nombre"
+                    placeholder="Nombre"
+                    class="form-input"
+                />
+
+                <input
+                    type="text"
+                    [(ngModel)]="nuevaSede.codigoCorto"
+                    placeholder="ID CORTO"
+                    maxlength="3"
+                    class="form-input"
+                    style="text-transform: uppercase;"
+                />
+
+                <select [(ngModel)]="nuevaSede.tipoSedeId" class="form-input">
+                    <option [ngValue]="null" disabled>Tipo de sede</option>
+                    <option *ngFor="let tipo of tiposSede" [ngValue]="tipo.id">
+                        {{ tipo.nombre }}
+                    </option>
+                </select>
+
+                <input
+                    type="text"
+                    [(ngModel)]="nuevaSede.ciudad"
+                    placeholder="Ciudad (opcional)"
+                    class="form-input"
+                />
+
+                <button class="btn-registrar" (click)="crearSede()">
+                    REGISTRAR
+                </button>
+            </div>
+
+            <!-- Lista de sedes -->
+            <div class="lista-sedes">
+                <div class="mensaje" *ngIf="loadingSedes">Cargando...</div>
+
+                <div class="sedes-grid" *ngIf="!loadingSedes">
+                    <div *ngFor="let sede of sedes" class="sede-card">
+                        <div class="sede-codigo">{{ sede.codigoCorto }}</div>
+                        <div class="sede-info">
+                            <div class="sede-nombre">{{ sede.nombre }}</div>
+                            <div class="sede-tipo">{{ sede.tipoSede }}</div>
+                        </div>
+                        <button class="btn-eliminar" (click)="eliminarSede(sede)">
+                            🗑
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- PESTAÑA ROLES -->
+    <div class="tab-content" *ngIf="pestanaActiva === 'ROLES'">
+        <div class="matriz-card">
+            <h2>MATRIZ DE ROLES Y PERMISOS</h2>
+
+            <div class="mensaje" *ngIf="loadingMatriz">Cargando...</div>
+
+            <div class="matriz-scroll" *ngIf="!loadingMatriz">
+                <table class="matriz-tabla">
+                    <thead>
+                        <tr>
+                            <th class="col-permiso">PERMISO \ ROL</th>
+                            <th *ngFor="let rol of matrizRoles" class="col-rol">
+                                {{ rol.nombre }}
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let permiso of matrizPermisos">
+                            <td class="celda-permiso">
+                                <div class="permiso-nombre">{{ permiso.nombre }}</div>
+                                <div class="permiso-desc">{{ permiso.descripcion }}</div>
+                            </td>
+                            <td *ngFor="let rol of matrizRoles" class="celda-check">
+                                <div
+                                    class="check-box"
+                                    [class.checked]="tienePermiso(rol.id, permiso.id)"
+                                    (click)="togglePermiso(rol.id, permiso.id)"
+                                >
+                                    <span *ngIf="tienePermiso(rol.id, permiso.id)">✓</span>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Barra de guardado -->
+            <div class="matriz-footer" *ngIf="!loadingMatriz">
+                <span class="cambios-info" *ngIf="hayCambiosPendientes">
+                    Tienes cambios sin guardar
+                </span>
+                <button
+                    class="btn-guardar-matriz"
+                    [disabled]="!hayCambiosPendientes || guardandoMatriz"
+                    (click)="guardarMatriz()"
+                >
+                    {{ guardandoMatriz ? 'GUARDANDO...' : 'GUARDAR CAMBIOS' }}
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PESTAÑA USERS -->
+    <div class="tab-content" *ngIf="pestanaActiva === 'USERS'">
+        <div class="config-layout">
+
+            <!-- Formulario nuevo usuario -->
+            <div class="form-card">
+                <h2>NUEVO USUARIO</h2>
+
+                <input
+                    type="text"
+                    [(ngModel)]="nuevoUsuario.nombreCompleto"
+                    placeholder="Nombre Completo"
+                    class="form-input"
+                />
+
+                <input
+                    type="password"
+                    [(ngModel)]="nuevoUsuario.password"
+                    placeholder="Contraseña"
+                    class="form-input"
+                />
+
+                <label class="form-label">ROL ASIGNADO</label>
+                <select [(ngModel)]="nuevoUsuario.rolId" class="form-input">
+                    <option [ngValue]="null" disabled>Selecciona un rol</option>
+                    <option *ngFor="let rol of roles" [ngValue]="rol.id">
+                        {{ rol.nombre }}
+                    </option>
+                </select>
+
+                <!-- Sede solo si el rol la requiere -->
+                <div *ngIf="rolRequiereSede">
+                    <label class="form-label">SEDE</label>
+                    <select [(ngModel)]="nuevoUsuario.sedeId" class="form-input">
+                        <option [ngValue]="null" disabled>Selecciona una sede</option>
+                        <option *ngFor="let sede of sedes" [ngValue]="sede.id">
+                            {{ sede.nombre }}
+                        </option>
+                    </select>
+                </div>
+
+                <!-- Indicador de acceso global -->
+                <div *ngIf="nuevoUsuario.rolId && !rolRequiereSede" class="acceso-global-info">
+                    Acceso Global / Sí
+                </div>
+
+                <button class="btn-registrar" (click)="crearUsuario()">
+                    CREAR USUARIO
+                </button>
+            </div>
+
+            <!-- Lista de usuarios -->
+            <div class="lista-usuarios">
+                <div class="mensaje" *ngIf="loadingUsuarios">Cargando...</div>
+
+                <div class="usuarios-lista" *ngIf="!loadingUsuarios">
+                    <div *ngFor="let usuario of usuarios" class="usuario-card">
+                        <div class="usuario-avatar">👤</div>
+                        <div class="usuario-info">
+                            <div class="usuario-nombre">{{ usuario.nombreCompleto }}</div>
+                            <div class="usuario-meta">
+                                <span class="badge-rol">{{ usuario.rolNombre }}</span>
+                                <span class="badge-sede" *ngIf="usuario.sedeNombre">
+                                    SEDE: {{ usuario.sedeNombre }}
+                                </span>
+                            </div>
+                        </div>
+                        <button class="btn-eliminar" (click)="eliminarUsuario(usuario)">
+                            🗑
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- PESTAÑA PLANTILLAS -->
+    <div class="tab-content" *ngIf="pestanaActiva === 'PLANTILLAS'">
+
+        <!-- VISTA 1: Lista de plantillas (cuando NO hay plantilla seleccionada) -->
+        <div class="config-layout" *ngIf="!plantillaSeleccionada">
+
+            <!-- Formulario nueva plantilla -->
+            <div class="form-card">
+                <h2>NUEVO PUNTO DE CONTROL</h2>
+
+                <input
+                    type="text"
+                    [(ngModel)]="nuevaPlantilla.nombre"
+                    placeholder="Título (ej. Higiene de...)"
+                    class="form-input"
+                />
+
+                <textarea
+                    [(ngModel)]="nuevaPlantilla.descripcion"
+                    placeholder="Descripción detallada"
+                    rows="3"
+                    class="form-input"
+                ></textarea>
+
+                <div class="form-row">
+                    <select
+                        [(ngModel)]="nuevaPlantilla.tipoCodigo"
+                        (change)="cambiarTipoPlantilla()"
+                        class="form-input"
+                    >
+                        <option value="CHECKLIST">Control</option>
+                        <option value="AUDITORIA">Auditoría</option>
+                    </select>
+
+                    <select [(ngModel)]="nuevaPlantilla.categoriaId" class="form-input">
+                        <option [ngValue]="null" disabled>Categoría</option>
+                        <option *ngFor="let cat of categoriasDisponibles" [ngValue]="cat.id">
+                            {{ cat.nombre }}
+                        </option>
+                    </select>
+                </div>
+
+                <button class="btn-registrar" (click)="crearPlantilla()">
+                    AGREGAR A PLANTILLA
+                </button>
+            </div>
+
+            <!-- Lista de plantillas -->
+            <div class="lista-plantillas">
+                <div class="mensaje" *ngIf="loadingPlantillas">Cargando...</div>
+
+                <div class="plantillas-config-lista" *ngIf="!loadingPlantillas">
+                    <div
+                        *ngFor="let plantilla of plantillas"
+                        class="plantilla-config-card clickable"
+                        (click)="abrirPlantilla(plantilla)"
+                    >
+                        <div
+                            class="plantilla-tipo-badge"
+                            [class.es-auditoria]="plantilla.tipoCodigo === 'AUDITORIA'"
+                        >
+                            {{ plantilla.tipoCodigo === 'CHECKLIST' ? 'CHECKLIST' : 'AUDIT' }}
+                        </div>
+                        <div class="plantilla-config-info">
+                            <div class="plantilla-config-nombre">{{ plantilla.nombre }}</div>
+                            <div class="plantilla-config-cat">
+                                {{ plantilla.categoriaNombre }}
+                                <span class="items-count">· {{ plantilla.totalItems }} items</span>
+                            </div>
+                        </div>
+                        <button class="btn-eliminar" (click)="$event.stopPropagation(); eliminarPlantilla(plantilla)">
+                            🗑
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- VISTA 2: Detalle de plantilla (gestionar items) -->
+        <div class="detalle-plantilla" *ngIf="plantillaSeleccionada">
+
+            <!-- Header del detalle -->
+            <div class="detalle-header">
+                <button class="btn-volver" (click)="cerrarDetallePlantilla()">← Volver</button>
+                <div>
+                    <h2>{{ plantillaSeleccionada.nombre }}</h2>
+                    <span class="detalle-subtitulo">
+                        {{ plantillaSeleccionada.tipoNombre }} · {{ plantillaSeleccionada.categoriaNombre }}
+                    </span>
+                </div>
+            </div>
+
+            <div class="config-layout">
+
+                <!-- Formulario nuevo item -->
+                <div class="form-card">
+                    <h2>NUEVO ITEM</h2>
+
+                    <input
+                        type="text"
+                        [(ngModel)]="nuevoItem.titulo"
+                        placeholder="Título del item"
+                        class="form-input"
+                    />
+
+                    <textarea
+                        [(ngModel)]="nuevoItem.descripcion"
+                        placeholder="Descripción (opcional)"
+                        rows="2"
+                        class="form-input"
+                    ></textarea>
+
+                    <label class="form-label">TIPO DE RESPUESTA</label>
+                    <select [(ngModel)]="nuevoItem.tipoRespuesta" class="form-input">
+                        <option value="CHECKBOX">Checkbox</option>
+                        <option value="CUMPLE_NO_CUMPLE">Cumple / No cumple</option>
+                    </select>
+
+                    <label class="checkbox-label">
+                        <input type="checkbox" [(ngModel)]="nuevoItem.esCritico" />
+                        Es item crítico
+                    </label>
+
+                    <button class="btn-registrar" (click)="crearItem()">
+                        AGREGAR ITEM
+                    </button>
+                </div>
+
+                <!-- Lista de items -->
+                <div class="lista-items">
+                    <div class="mensaje" *ngIf="loadingItems">Cargando...</div>
+
+                    <div class="items-config-lista" *ngIf="!loadingItems">
+                        <div *ngIf="itemsPlantilla.length === 0" class="mensaje">
+                            Esta plantilla aún no tiene items. Agrega el primero.
+                        </div>
+
+                        <div *ngFor="let item of itemsPlantilla" class="item-config-card">
+                            <div class="item-orden">{{ item.orden }}</div>
+                            <div class="item-config-info">
+                                <div class="item-config-titulo">
+                                    {{ item.titulo }}
+                                    <span class="badge-critico" *ngIf="item.esCritico">CRÍTICO</span>
+                                </div>
+                                <div class="item-config-meta">
+                                    {{ item.descripcion }}
+                                    <span class="tipo-respuesta">
+                                        [{{ getTipoRespuestaLabel(item.tipoRespuesta) }}]
+                                    </span>
+                                </div>
+                            </div>
+                            <button class="btn-eliminar" (click)="eliminarItem(item)">🗑</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>

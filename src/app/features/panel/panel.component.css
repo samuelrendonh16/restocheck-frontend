@@ -1,0 +1,222 @@
+.panel-page {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Header */
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.header-sede {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.punto-estado {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #E53935;
+}
+
+.punto-estado.estado-optimo { background: #4CAF50; }
+.punto-estado.estado-progreso { background: #FF9800; }
+.punto-estado.estado-critico { background: #E53935; }
+
+.header-sede h1 {
+    margin: 0 0 4px 0;
+    font-size: 26px;
+    color: #1a1a2e;
+}
+
+.sede-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.sede-activa {
+    font-size: 12px;
+    color: #999;
+    font-weight: 600;
+}
+
+.badge-estado {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 6px;
+}
+
+.badge-estado.estado-optimo { background: #e8f5e9; color: #4CAF50; }
+.badge-estado.estado-progreso { background: #fff3e0; color: #FF9800; }
+.badge-estado.estado-critico { background: #ffebee; color: #E53935; }
+
+/* Selector fecha */
+.fecha-selector {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    background: #f9f9f9;
+    padding: 12px 16px;
+    border-radius: 8px;
+}
+
+.fecha-selector label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #666;
+}
+
+.fecha-selector input {
+    border: none;
+    background: transparent;
+    font-size: 14px;
+    color: #E53935;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.fecha-selector input:focus { outline: none; }
+
+/* Contenido */
+.panel-content {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 24px;
+}
+
+/* Card evaluaciones */
+.card-evaluaciones {
+    background: #1a1a2e;
+    border-radius: 16px;
+    padding: 32px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 320px;
+}
+
+.eval-label {
+    font-size: 13px;
+    color: #999;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.eval-numero {
+    font-size: 96px;
+    font-weight: 700;
+    line-height: 1;
+    margin: 16px 0;
+}
+
+.progreso-section {
+    margin-top: auto;
+}
+
+.progreso-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: #999;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.progreso-pct {
+    color: #E53935;
+    font-size: 16px;
+}
+
+.progreso-barra {
+    height: 8px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progreso-fill {
+    height: 100%;
+    background: #E53935;
+    border-radius: 4px;
+    transition: width 0.3s;
+}
+
+/* Card momentos */
+.card-momentos {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.momentos-titulo {
+    font-size: 13px;
+    color: #999;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin-bottom: 20px;
+}
+
+.momento-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.momento-item:last-child {
+    border-bottom: none;
+}
+
+.momento-icono {
+    width: 44px;
+    height: 44px;
+    background: #f9f9f9;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+}
+
+.momento-info {
+    flex: 1;
+}
+
+.momento-nombre {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1a1a2e;
+}
+
+.momento-tareas {
+    font-size: 12px;
+    color: #999;
+    margin-top: 2px;
+}
+
+.momento-pct {
+    font-size: 18px;
+    font-weight: 700;
+    color: #E53935;
+}
+
+/* Mensaje */
+.mensaje {
+    padding: 40px;
+    text-align: center;
+    color: #999;
+}

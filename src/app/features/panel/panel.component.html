@@ -1,0 +1,73 @@
+<div class="panel-page">
+
+    <!-- Header con sede y fecha -->
+    <div class="panel-header">
+        <div class="header-sede">
+            <div class="punto-estado" [class]="estadoClase"></div>
+            <div>
+                <h1>{{ nombreSede }}</h1>
+                <div class="sede-meta">
+                    <span class="sede-activa">SEDE ACTIVA</span>
+                    <span class="badge-estado" [class]="estadoClase">⚠ {{ estadoSede }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="fecha-selector">
+            <label>CONSULTA:</label>
+            <input
+                type="date"
+                [(ngModel)]="fechaConsulta"
+                (change)="cambiarFecha()"
+            />
+        </div>
+    </div>
+
+    <!-- Loading -->
+    <div class="mensaje" *ngIf="loading">Cargando...</div>
+
+    <!-- Contenido -->
+    <div class="panel-content" *ngIf="!loading && resumen">
+
+        <!-- Card grande de evaluaciones -->
+        <div class="card-evaluaciones">
+            <div class="eval-label">EVALUACIONES REALIZADAS</div>
+            <div class="eval-numero">
+                {{ resumen.evaluacionesCompletadas }}/{{ resumen.totalEvaluaciones }}
+            </div>
+
+            <div class="progreso-section">
+                <div class="progreso-label">
+                    <span>PROGRESO TOTAL DE OPERACIÓN</span>
+                    <span class="progreso-pct">{{ resumen.progresoTotal }}%</span>
+                </div>
+                <div class="progreso-barra">
+                    <div
+                        class="progreso-fill"
+                        [style.width.%]="resumen.progresoTotal"
+                    ></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card cumplimiento por momento -->
+        <div class="card-momentos">
+            <div class="momentos-titulo">CUMPLIMIENTO POR MOMENTO</div>
+
+            <div
+                *ngFor="let cat of resumen.categorias"
+                class="momento-item"
+            >
+                <div class="momento-icono">{{ getIcono(cat.codigo) }}</div>
+                <div class="momento-info">
+                    <div class="momento-nombre">{{ cat.nombre }}</div>
+                    <div class="momento-tareas">
+                        {{ cat.completadas }}/{{ cat.totalPlantillas }} TAREAS
+                    </div>
+                </div>
+                <div class="momento-pct">{{ cat.porcentaje }}%</div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
