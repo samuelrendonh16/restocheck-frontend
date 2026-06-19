@@ -220,3 +220,41 @@
     text-align: center;
     color: #999;
 }
+
+/* ============================================
+   RESPONSIVE - Móvil y tablet (≤768px)
+   ============================================ */
+@media (max-width: 768px) {
+
+    /* Header: nombre de sede y selector de fecha apilados */
+    .panel-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+        padding: 20px;
+    }
+
+    .fecha-selector {
+        width: 100%;
+    }
+
+    .header-sede h1 {
+        font-size: 22px;
+    }
+
+    /* Las dos cards (evaluaciones | momentos) se apilan */
+    .panel-content {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    /* Card de evaluaciones: reducir el número gigante */
+    .card-evaluaciones {
+        padding: 24px;
+        min-height: auto;
+    }
+
+    .eval-numero {
+        font-size: 64px;
+    }
+}

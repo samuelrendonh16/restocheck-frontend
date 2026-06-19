@@ -579,3 +579,116 @@
 .item-card {
     display: block;
 }
+
+/* Botones ✓ / ✗ para items de control */
+.item-check-botones {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-check-si,
+.btn-check-no {
+    width: 48px;
+    height: 48px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    background: white;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #999;
+    transition: all 0.15s;
+}
+
+.btn-check-si:hover {
+    border-color: #4CAF50;
+    color: #4CAF50;
+}
+
+.btn-check-no:hover {
+    border-color: #E53935;
+    color: #E53935;
+}
+
+.btn-check-si.active {
+    background: #4CAF50;
+    border-color: #4CAF50;
+    color: white;
+}
+
+.btn-check-no.active {
+    background: #E53935;
+    border-color: #E53935;
+    color: white;
+}
+
+/* ============================================
+   RESPONSIVE - Móvil y tablet (≤768px)
+   ============================================ */
+@media (max-width: 768px) {
+
+    /* Header: apilar info de sede y selector de fecha */
+    .tareas-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .fecha-selector {
+        width: 100%;
+    }
+
+    /* Las dos columnas (categorías | contenido) se apilan */
+    .tareas-content {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    /* Header de ejecución: botón finalizar abajo del título */
+    .ejecucion-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .btn-finalizar {
+        width: 100%;
+    }
+
+    /* Items: el contenido y los botones se apilan */
+    .item-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+
+    /* Botones CUMPLE/NO CUMPLE y ✓/✗ a todo el ancho */
+    .item-botones,
+    .item-check-botones {
+        width: 100%;
+    }
+
+    .btn-cumple,
+    .btn-no-cumple {
+        flex: 1;
+    }
+
+    .btn-check-si,
+    .btn-check-no {
+        flex: 1;
+    }
+
+    /* El checkbox simple se alinea a la izquierda */
+    .item-checkbox {
+        align-self: flex-start;
+    }
+
+    /* Resumen de ejecución completada: detalles en columna */
+    .resumen-detalles {
+        flex-wrap: wrap;
+        gap: 24px;
+    }
+}

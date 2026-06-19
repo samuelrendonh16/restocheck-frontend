@@ -180,14 +180,22 @@
                         <div class="item-descripcion">{{ item.descripcion }}</div>
                     </div>
 
-                    <!-- Tipo CHECKBOX -->
-                    <div 
-                        *ngIf="item.tipoRespuesta === 'CHECKBOX'"
-                        class="item-checkbox"
-                        [class.checked]="item.completado === true"
-                        (click)="marcarItem(item, item.completado !== true)"
-                    >
-                        <span *ngIf="item.completado === true">✓</span>
+                    <!-- Tipo CHECKBOX (ahora con ✓ y ✗) -->
+                    <div *ngIf="item.tipoRespuesta === 'CHECKBOX'" class="item-check-botones">
+                        <button
+                            class="btn-check-si"
+                            [class.active]="item.completado === true"
+                            (click)="marcarItem(item, true)"
+                        >
+                            ✓
+                        </button>
+                        <button
+                            class="btn-check-no"
+                            [class.active]="item.completado === false"
+                            (click)="marcarItem(item, false)"
+                        >
+                            ✕
+                        </button>
                     </div>
 
                     <!-- Tipo CUMPLE/NO CUMPLE -->

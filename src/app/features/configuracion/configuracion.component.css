@@ -555,3 +555,162 @@
     background: #ccc;
     cursor: not-allowed;
 }
+
+/* ============================================
+   RESPONSIVE - Móvil y tablet (≤768px)
+   ============================================ */
+@media (max-width: 768px) {
+
+    /* Pestañas: permitir scroll horizontal si no caben */
+    .tabs {
+        max-width: 100%;
+        overflow-x: auto;
+        gap: 4px;
+    }
+
+    .tab {
+        padding: 10px 14px;
+        font-size: 12px;
+        white-space: nowrap;
+    }
+
+    /* Layout formulario | lista → apilados */
+    .config-layout {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    /* Grid de sedes: 1 columna */
+    .sedes-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Form row (tipo | categoría en plantillas) se apila */
+    .form-row {
+        flex-direction: column;
+    }
+
+    .form-row .form-input {
+        margin-bottom: 12px;
+    }
+
+    /* Detalle de plantilla: header apilado */
+    .detalle-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    /* MATRIZ DE ROLES: scroll horizontal (no se puede apilar una tabla) */
+    .matriz-scroll {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .matriz-tabla {
+        min-width: 600px; /* Fuerza scroll en vez de aplastar */
+    }
+
+    .celda-permiso {
+        min-width: 180px;
+    }
+
+    /* Footer de la matriz: botón a todo el ancho */
+    .matriz-footer {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+
+    .btn-guardar-matriz {
+        width: 100%;
+    }
+}
+
+/* Por defecto (escritorio): mostrar tabla, ocultar acordeón */
+.solo-movil {
+    display: none;
+}
+
+.solo-escritorio {
+    display: block;
+}
+
+/* Acordeón de roles */
+.acordeon-roles {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.acordeon-rol {
+    border: 1px solid #eee;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.acordeon-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    background: #f9f9f9;
+    cursor: pointer;
+}
+
+.acordeon-rol-nombre {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1a1a2e;
+}
+
+.acordeon-rol-count {
+    font-size: 12px;
+    color: #999;
+    margin-top: 2px;
+}
+
+.acordeon-flecha {
+    color: #E53935;
+    font-size: 12px;
+}
+
+.acordeon-body {
+    padding: 8px 0;
+}
+
+.acordeon-permiso {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 20px;
+    border-top: 1px solid #f0f0f0;
+    cursor: pointer;
+}
+
+.acordeon-permiso-info {
+    flex: 1;
+}
+
+.acordeon-permiso-nombre {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1a1a2e;
+}
+
+.acordeon-permiso-desc {
+    font-size: 12px;
+    color: #999;
+    margin-top: 2px;
+}
+
+/* En móvil: ocultar tabla, mostrar acordeón */
+@media (max-width: 768px) {
+    .solo-escritorio {
+        display: none;
+    }
+    .solo-movil {
+        display: block;
+    }
+}

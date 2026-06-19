@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 interface SedeCompliance {
     sedeId: number;
@@ -57,7 +58,7 @@ export class ReportesComponent implements OnInit {
     // Sesión
     empresaId: number = 1;
 
-    private apiUrl = 'http://localhost:3000/api';
+    private apiUrl = environment.apiUrl;
 
     constructor(
         private http: HttpClient,

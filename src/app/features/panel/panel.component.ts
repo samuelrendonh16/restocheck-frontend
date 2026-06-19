@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 interface CategoriaPanel {
     categoriaId: number;
@@ -37,7 +38,7 @@ export class PanelComponent implements OnInit {
 
     fechaConsulta: string = new Date().toISOString().split('T')[0];
 
-    private apiUrl = 'http://localhost:3000/api';
+    private apiUrl = environment.apiUrl;
 
     constructor(
         private http: HttpClient,

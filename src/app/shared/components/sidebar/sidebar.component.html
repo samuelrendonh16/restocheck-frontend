@@ -24,14 +24,19 @@
         
         <!-- Lista de sedes -->
         <ul class="sedes-list" *ngIf="sedeDropdownOpen">
-            <li 
-                *ngFor="let sede of sedes" 
+            <li
+                *ngFor="let sede of sedes"
                 (click)="cambiarSede(sede)"
                 [class.active]="sede.id === sedeActiva?.id"
             >
                 {{ sede.nombre }}
             </li>
         </ul>
+
+        <!-- Botón logout solo visible en móvil -->
+        <button class="btn-logout-movil" (click)="logout()">
+            ⏻
+        </button>
     </div>
 
     <!-- Menú de Navegación -->

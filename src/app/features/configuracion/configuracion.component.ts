@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 interface Sede {
     id: number;
@@ -165,10 +166,13 @@ export class ConfiguracionComponent implements OnInit {
     cambiosPendientes = new Map<string, boolean>();
     guardandoMatriz: boolean = false;
 
+    // Rol expandido en la vista móvil (acordeón)
+    rolExpandido: number | null = null;
+
     // Sesión
     empresaId: number = 1;
 
-    private apiUrl = 'http://localhost:3000/api';
+    private apiUrl = environment.apiUrl;
 
     constructor(
         private http: HttpClient,
@@ -737,5 +741,21 @@ export class ConfiguracionComponent implements OnInit {
                 this.cdr.detectChanges();
             }
         });
+    }
+
+    /**
+     * Expandir/colapsar un rol en la vista móvil
+     */
+    toggleRolExpandido(rolId: number): void {
+        this.rolExpandido = this.rolExpandido === rolId ? null : rolId;
+    }
+
+    /**
+     * Contar permisos habilitados de un rol (para mostrar en el acordeón)
+     */
+    contarPermisosRol(rolId: number): number {
+        return this.matrizAsignaciones.filter(
+            a => a.rolId === rolId && a.habilitado
+        ).length;
     }
 }

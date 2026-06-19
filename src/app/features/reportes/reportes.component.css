@@ -332,3 +332,52 @@
     font-weight: 700;
     color: #E53935;
 }
+
+/* ============================================
+   RESPONSIVE - Móvil y tablet (≤768px)
+   ============================================ */
+@media (max-width: 768px) {
+
+    /* El menú lateral y el contenido se apilan */
+    .reportes-layout {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    /* El menú de vistas pasa a fila horizontal con scroll */
+    .menu-lateral {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .menu-item {
+        flex: 1;
+        min-width: 0;
+        text-align: center;
+        padding: 12px 10px;
+        font-size: 11px;
+    }
+
+    /* El filtro de fechas ocupa todo el ancho debajo del menú */
+    .filtro-fechas {
+        width: 100%;
+        order: 1; /* Lo manda al final del menú */
+    }
+
+    /* Las tarjetas de sedes: 1 sola columna */
+    .sedes-grid-reportes {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    /* Ranking: ajustar tamaños */
+    .ranking-card {
+        padding: 14px 16px;
+        gap: 12px;
+    }
+
+    .ranking-promedio {
+        font-size: 20px;
+    }
+}

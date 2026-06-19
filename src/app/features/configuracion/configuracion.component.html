@@ -103,7 +103,8 @@
 
             <div class="mensaje" *ngIf="loadingMatriz">Cargando...</div>
 
-            <div class="matriz-scroll" *ngIf="!loadingMatriz">
+            <!-- VISTA ESCRITORIO: tabla -->
+            <div class="matriz-scroll solo-escritorio" *ngIf="!loadingMatriz">
                 <table class="matriz-tabla">
                     <thead>
                         <tr>
@@ -131,6 +132,44 @@
                         </tr>
                     </tbody>
                 </table>
+            </div>
+
+            <!-- VISTA MÓVIL: acordeón por rol -->
+            <div class="acordeon-roles solo-movil" *ngIf="!loadingMatriz">
+                <div *ngFor="let rol of matrizRoles" class="acordeon-rol">
+                    <!-- Cabecera del rol (clic para expandir) -->
+                    <div class="acordeon-header" (click)="toggleRolExpandido(rol.id)">
+                        <div>
+                            <div class="acordeon-rol-nombre">{{ rol.nombre }}</div>
+                            <div class="acordeon-rol-count">
+                                {{ contarPermisosRol(rol.id) }} permisos activos
+                            </div>
+                        </div>
+                        <span class="acordeon-flecha">
+                            {{ rolExpandido === rol.id ? '▲' : '▼' }}
+                        </span>
+                    </div>
+
+                    <!-- Permisos del rol (visible al expandir) -->
+                    <div class="acordeon-body" *ngIf="rolExpandido === rol.id">
+                        <div
+                            *ngFor="let permiso of matrizPermisos"
+                            class="acordeon-permiso"
+                            (click)="togglePermiso(rol.id, permiso.id)"
+                        >
+                            <div class="acordeon-permiso-info">
+                                <div class="acordeon-permiso-nombre">{{ permiso.nombre }}</div>
+                                <div class="acordeon-permiso-desc">{{ permiso.descripcion }}</div>
+                            </div>
+                            <div
+                                class="check-box"
+                                [class.checked]="tienePermiso(rol.id, permiso.id)"
+                            >
+                                <span *ngIf="tienePermiso(rol.id, permiso.id)">✓</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- Barra de guardado -->
