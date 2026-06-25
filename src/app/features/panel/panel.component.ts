@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
+import { AuthService } from '../../core/services/auth.service';
 
 interface CategoriaPanel {
     categoriaId: number;
@@ -42,18 +43,25 @@ export class PanelComponent implements OnInit {
 
     constructor(
         private http: HttpClient,
-        private cdr: ChangeDetectorRef
+        private cdr: ChangeDetectorRef,
+        private authService: AuthService
     ) { }
 
     ngOnInit(): void {
-        const sessionStr = localStorage.getItem('restocheck_session');
-        if (sessionStr) {
-            const session = JSON.parse(sessionStr);
-            this.nombreSede = session.sedeActiva?.nombre || 'Sin sede';
-            this.sedeId = session.sedeActiva?.id || 1;
-        }
+        // Suscribirse a cambios de sesión/sede (reactivo)
+        this.authService.session$.subscribe(session => {
+            if (session) {
+                this.nombreSede = session.sedeActiva?.nombre || 'Sin sede';
 
-        this.cargarResumen();
+                const nuevaSedeId = session.sedeActiva?.id || 1;
+
+                // Si cambió la sede, actualizar y recargar
+                if (nuevaSedeId !== this.sedeId) {
+                    this.sedeId = nuevaSedeId;
+                    this.cargarResumen();
+                }
+            }
+        });
     }
 
     /**
