@@ -84,6 +84,7 @@ export class TareasComponent implements OnInit {
     nombreSede: string = '';
     sedeId: number = 1;
     usuarioId: number = 1;
+    rolId: number | null = null;
     fechaConsulta: string = new Date().toISOString().split('T')[0];
 
     private apiUrl = environment.apiUrl;
@@ -100,6 +101,7 @@ export class TareasComponent implements OnInit {
             this.nombreSede = session.sedeActiva?.nombre || 'Sin sede';
             this.sedeId = session.sedeActiva?.id || 1;
             this.usuarioId = session.usuario?.id || 1;
+            this.rolId = session.rol?.id || null;
         }
         
         this.cargarCategorias();
@@ -296,7 +298,8 @@ export class TareasComponent implements OnInit {
     const body = {
         plantillaId: plantilla.id,
         sedeId: this.sedeId,
-        usuarioId: this.usuarioId
+        usuarioId: this.usuarioId,
+        rolId: this.rolId
     };
 
     this.http.post<any>(`${this.apiUrl}/tareas/ejecucion/iniciar`, body).subscribe({
@@ -308,6 +311,15 @@ export class TareasComponent implements OnInit {
         error: (err) => {
             console.error('Error:', err);
             this.loadingEjecucion = false;
+
+            // Mostrar mensaje si fue rechazo de permisos (403)
+            if (err.status === 403) {
+                const mensaje = err.error?.error?.message || 'No tienes permiso para esta acción';
+                alert('🚫 ' + mensaje);
+            } else {
+                alert('Error al iniciar la tarea');
+            }
+
             this.cdr.detectChanges();
         }
     });
