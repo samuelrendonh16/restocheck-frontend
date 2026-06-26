@@ -38,8 +38,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: transparent;
-    border-radius: 0;
 }
 
 .logo-img {
